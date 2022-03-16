@@ -17,6 +17,18 @@ describe('GetAllTags', () => {
 
     expect(sut).toEqual([])
   })
+
+  it('Should return an list of Tags array if has folders in article folder', () => {
+    const arrayOfFolders: string[] = ['nextjs', 'css']
+    const FSReadFileSync = jest.fn().mockImplementationOnce(() => {
+      return arrayOfFolders
+    })
+    mocked(fs.readdirSync).mockImplementationOnce(FSReadFileSync)
+
+    const sut = getAllTags()
+
+    expect(sut).toEqual(arrayOfFolders)
+  })
 })
 
 export {}
