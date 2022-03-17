@@ -1,33 +1,10 @@
 import { mocked } from 'jest-mock'
 import { getAllTags } from '../../src/lib/tags'
 import fs from 'fs'
-import path from 'path'
+import { getAllArticles } from '../../src/lib/articles'
 
 jest.mock('../../src/lib/tags')
 jest.mock('fs')
-
-type Articles = {
-  tag: string
-  articles: string[]
-}
-const getAllArticles = (): Articles[] => {
-  const tag = getAllTags()
-
-  const getArticleFromFolder = (value: string): Articles => {
-    const files = fs
-      .readdirSync(path.join(process.cwd(), `src/articles/${value}`))
-      .map(item => item.split('.')[0])
-
-    return {
-      tag: value,
-      articles: files
-    }
-  }
-
-  const articles = tag.map(getArticleFromFolder)
-
-  return articles
-}
 
 describe('Article Helpers', () => {
   describe('GetAllArticles', () => {
@@ -43,19 +20,24 @@ describe('Article Helpers', () => {
 
     it('Should return an list of Article if tag folder is not empty', () => {
       const getAllTagsStub = jest.fn().mockImplementationOnce(() => {
-        return ['css']
+        return ['css', 'nextjs']
       })
       mocked(getAllTags).mockImplementationOnce(getAllTagsStub)
 
-      const readdirSyncStub = jest.fn().mockImplementationOnce(() => {
+      const readdirSyncStub = jest.fn().mockImplementation(() => {
         return ['hello-world']
       })
-      mocked(fs.readdirSync).mockImplementationOnce(readdirSyncStub)
+      mocked(fs.readdirSync).mockImplementation(readdirSyncStub)
 
       const sut = getAllArticles()
 
       expect(sut).toEqual([{
         tag: 'css',
+        articles: [
+          'hello-world'
+        ]
+      }, {
+        tag: 'nextjs',
         articles: [
           'hello-world'
         ]
