@@ -3,22 +3,14 @@ import { getAllTags } from '../../src/lib/tags'
 import fs from 'fs'
 import { getAllArticles } from '../../src/lib/articles'
 import { matterAdapter } from '../../src/lib/adapters/gray-matter'
+import { makeArticleData } from '../makers/articleData'
 
 jest.mock('../../src/lib/tags')
 jest.mock('fs')
 jest.mock('../../src/lib/adapters/gray-matter')
 
 describe('Article Helpers', () => {
-  const articleData = {
-    title: 'any_title',
-    sumary: 'any_sumary',
-    author: 'any_author',
-    function: 'any_function',
-    date: 'any_date',
-    tag: 'any_tag',
-    image: 'any_image',
-    content: 'any_content'
-  }
+  const articleData = makeArticleData()
 
   beforeEach(() => {
     const getAllTagsStub = jest.fn().mockImplementation(() => {

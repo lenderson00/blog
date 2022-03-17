@@ -10,7 +10,7 @@ type MatterAdapterResult = {
 }
 
 export const matterAdapter = (filePath: string, fileName: string): MatterAdapterResult => {
-  const markdownWithMeta = fs.readFileSync(path.join(filePath, fileName + '.mdx'), 'utf-8')
+  const markdownWithMeta = fs.readFileSync(path.join(process.cwd(), filePath, fileName + '.mdx'), 'utf-8')
   const { data: frontMatter, content } = matter(markdownWithMeta)
   return {
     article: frontMatter as Article,
