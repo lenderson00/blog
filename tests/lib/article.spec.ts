@@ -2,11 +2,41 @@ import { mocked } from 'jest-mock'
 import { getAllTags } from '../../src/lib/tags'
 import fs from 'fs'
 import { getAllArticles } from '../../src/lib/articles'
+import { matterAdapter } from '../../src/lib/adapters/gray-matter'
 
 jest.mock('../../src/lib/tags')
 jest.mock('fs')
+jest.mock('../../src/lib/adapters/gray-matter')
 
 describe('Article Helpers', () => {
+  const articleData = {
+    title: 'any_title',
+    sumary: 'any_sumary',
+    author: 'any_author',
+    function: 'any_function',
+    date: 'any_date',
+    tag: 'any_tag',
+    image: 'any_image',
+    content: 'any_content'
+  }
+
+  beforeEach(() => {
+    const getAllTagsStub = jest.fn().mockImplementation(() => {
+      return ['css', 'nextjs']
+    })
+    mocked(getAllTags).mockImplementation(getAllTagsStub)
+
+    const readdirSyncStub = jest.fn().mockImplementation(() => {
+      return ['hello-world']
+    })
+    mocked(fs.readdirSync).mockImplementation(readdirSyncStub)
+
+    const matterAdapterStub = jest.fn().mockImplementation(() => {
+      return { article: articleData, content: 'any_content' }
+    })
+    mocked(matterAdapter).mockImplementation(matterAdapterStub)
+  })
+
   describe('GetAllArticles', () => {
     it('Should return an empty array of Article if [tag] folder is empty', () => {
       const getAllTagsStub = jest.fn().mockImplementationOnce(() => {
@@ -19,27 +49,17 @@ describe('Article Helpers', () => {
     })
 
     it('Should return an list of Article if tag folder is not empty', () => {
-      const getAllTagsStub = jest.fn().mockImplementationOnce(() => {
-        return ['css', 'nextjs']
-      })
-      mocked(getAllTags).mockImplementationOnce(getAllTagsStub)
-
-      const readdirSyncStub = jest.fn().mockImplementation(() => {
-        return ['hello-world']
-      })
-      mocked(fs.readdirSync).mockImplementation(readdirSyncStub)
-
       const sut = getAllArticles()
 
       expect(sut).toEqual([{
         tag: 'css',
         articles: [
-          'hello-world'
+          articleData
         ]
       }, {
         tag: 'nextjs',
         articles: [
-          'hello-world'
+          articleData
         ]
       }])
     })
