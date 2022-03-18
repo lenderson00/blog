@@ -4,10 +4,9 @@ import { matterAdapter } from '../adapters/gray-matter'
 import { Article, Articles } from '../models/articles'
 
 export const getArticleFromFolder = (value: string): Articles => {
-  const filePath = `src/articles/${value}`
-  const paths = fs.readdirSync(path.join(process.cwd(), filePath)).map(item => item.split('.')[0])
-
   const articlesList: Article[] = []
+  const filePath = `src/articles/${value}`
+  const paths = getAllSlugByFolder(value)
 
   for (const fileName of paths) {
     const { article, content } = matterAdapter(filePath, fileName)
@@ -22,4 +21,10 @@ export const getArticleFromFolder = (value: string): Articles => {
     tag: value,
     articles: articlesList
   }
+}
+
+export const getAllSlugByFolder = (folder: string): string[] => {
+  const filePath = `src/articles/${folder}`
+  const slugs = fs.readdirSync(path.join(process.cwd(), filePath)).map(item => item.split('.')[0])
+  return slugs
 }
