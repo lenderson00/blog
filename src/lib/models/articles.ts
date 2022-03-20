@@ -8,6 +8,8 @@ export type Article = {
   tag: string
   image?: string
   imageLabel?: string
+  active?: boolean
+  slug?: string
 
   content?: string
 }

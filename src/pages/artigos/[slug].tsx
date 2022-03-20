@@ -1,8 +1,56 @@
-type Props = {
+import { getArticleBySlug } from 'lib/getArticle'
+import { getAllTags } from 'lib/tags'
+import { getAllSlugByFolder } from 'lib/utils/getArticleFromFolder'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
+export const getStaticPaths: GetStaticPaths = () => {
+  const tags = getAllTags()
+
+  const paths = []
+
+  for (const tag of tags) {
+    const slugs = getAllSlugByFolder(tag)
+
+    for (const slug of slugs) {
+      paths.push({
+        params: {
+          slug
+        }
+      })
+    }
+  }
+
+  return {
+    paths,
+    fallback: false
+  }
 }
 
-const Slug: React.FC<Props> = ({ children }) => {
+interface IParams extends ParsedUrlQuery {
+  slug: string
+  tag: string
+}
+
+export const getStaticProps: GetStaticProps = (ctx) => {
+  const { slug } = ctx.params as IParams
+  const article = getArticleBySlug(slug)
+
+  if (article.active ?? false) {
+    return {
+      notFound: true
+    }
+  }
+
+  return {
+    props: {
+      article
+    }
+  }
+}
+
+const Slug: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (article) => {
+  console.log(article)
   return (
   <>
     Lenderson Macedo - Slug
