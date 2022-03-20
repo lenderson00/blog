@@ -8,6 +8,7 @@ export const makeArticleData = (): Article => {
     function: 'any_function',
     date: 'any_date',
     tag: 'any_tag',
+    active: false,
     image: 'any_image',
     content: 'any_content'
   }

@@ -29,14 +29,13 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 interface IParams extends ParsedUrlQuery {
   slug: string
-  tag: string
 }
 
 export const getStaticProps: GetStaticProps = (ctx) => {
   const { slug } = ctx.params as IParams
   const article = getArticleBySlug(slug)
 
-  if (article.active ?? false) {
+  if (!article.active) {
     return {
       notFound: true
     }
