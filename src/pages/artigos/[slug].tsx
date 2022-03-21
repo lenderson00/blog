@@ -4,6 +4,8 @@ import { getAllSlugByFolder } from 'lib/utils/getArticleFromFolder'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 
+import { ThemeToggle } from '../../components/ThemeToggle'
+
 export const getStaticPaths: GetStaticPaths = () => {
   const tags = getAllTags()
 
@@ -49,12 +51,22 @@ export const getStaticProps: GetStaticProps = (ctx) => {
 }
 
 const Slug: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (article) => {
-  console.log(article)
   return (
-  <>
+  <Wrapper>
+
+      <ThemeToggle />
+
     Lenderson Macedo - Slug
-  </>
+  </Wrapper>
   )
 }
 
 export default Slug
+
+const Wrapper: React.FC = ({ children }) => {
+  return (
+    <div className="min-h-screen dark:text-white dark:bg-black ">
+      {children}
+    </div>
+  )
+}
