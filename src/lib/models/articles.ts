@@ -3,7 +3,7 @@ export type Article = {
   title: string
   sumary: string
   author: string
-  function: string
+  occupation: string
   date: string
   tag: string
   image?: string

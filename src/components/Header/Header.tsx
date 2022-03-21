@@ -18,7 +18,7 @@ const Menu = [
 
 const Header: React.FC = () => {
   return (
-  <div className='flex items-center justify-between h-16 mx-auto max-w-7xl'>
+  <div className='flex items-center justify-between h-16 mx-auto max-w-5xl  px-[5vw] backdrop-blur-2xl'>
     <div className='flex text-xl font-bold'>
       <Link href='/' passHref>
         <div className='flex items-center gap-2 mr-4 cursor-pointer text-primary dark:text-primaryDark'>Blog do Lend</div>
