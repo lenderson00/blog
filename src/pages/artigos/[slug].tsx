@@ -1,10 +1,9 @@
+import Header from 'components/Header/Header'
 import { getArticleBySlug } from 'lib/getArticle'
 import { getAllTags } from 'lib/tags'
 import { getAllSlugByFolder } from 'lib/utils/getArticleFromFolder'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-
-import { ThemeToggle } from '../../components/ThemeToggle'
 
 export const getStaticPaths: GetStaticPaths = () => {
   const tags = getAllTags()
@@ -53,8 +52,7 @@ export const getStaticProps: GetStaticProps = (ctx) => {
 const Slug: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = (article) => {
   return (
   <Wrapper>
-
-      <ThemeToggle />
+    <Header />
 
     Lenderson Macedo - Slug
   </Wrapper>
