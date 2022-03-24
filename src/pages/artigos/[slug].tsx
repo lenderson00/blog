@@ -7,6 +7,9 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 
 import { ParsedUrlQuery } from 'querystring'
 
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote'
+
 export const getStaticPaths: GetStaticPaths = () => {
   const tags = getAllTags()
 
@@ -33,26 +36,29 @@ interface IParams extends ParsedUrlQuery {
   slug: string
 }
 
-export const getStaticProps: GetStaticProps = (ctx) => {
+export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params as IParams
 
   const article = getArticleBySlug(slug)
 
+  const mdxSource = await serialize(article.content ?? '')
+
   return {
     props: {
-      article
+      article,
+      source: mdxSource
     }
   }
 }
 
-const Slug: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ article }) => {
+const Slug: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ article, source }) => {
   return (
   <Wrapper>
     <Header />
     <PostHeader {...article}/>
-    <article>
-      {article.content}
-    </article>
+    <Article>
+      <MDXRemote {...source} />
+    </Article>
 
   </Wrapper>
   )
@@ -65,5 +71,13 @@ const Wrapper: React.FC = ({ children }) => {
     <div className="min-h-screen bg-white text-slate-500 dark:text-white dark:bg-black lg:px-0 ">
       {children}
     </div>
+  )
+}
+
+const Article: React.FC = ({ children }) => {
+  return (
+    <article className="mx-auto max-w-5xl  px-[5vw]">
+      {children}
+    </article>
   )
 }

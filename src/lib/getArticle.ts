@@ -9,7 +9,7 @@ export const getArticleBySlug = (slug: string): Article => {
 
   for (const tag of tags) {
     const listOfArticles = getArticlesByTag(tag)
-    console.log(listOfArticles)
+
     const articleFromlist = listOfArticles.articles.filter(item => item.slug === slug)
     if (articleFromlist.length > 0) {
       article = articleFromlist
