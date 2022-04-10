@@ -9,6 +9,7 @@ import { ParsedUrlQuery } from 'querystring'
 
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
+import { Tag } from 'components/Tag/Tag'
 
 export const getStaticPaths: GetStaticPaths = () => {
   const tags = getAllTags()
@@ -58,6 +59,16 @@ const Slug: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ articl
     <PostHeader {...article}/>
     <Article>
       <MDXRemote {...source} />
+
+      <Tag>{ article.tag }</Tag>
+
+      <div className='relative flex justify-center w-full mt-12'>
+        <div className='absolute inset-0 w-48 h-48 bg-fuchsia-500 rounded-xl'></div>
+        <div className='w-full h-32 ml-12 bg-fuchsia-400 rounded-2xl'>
+s
+        </div>
+
+      </div>
     </Article>
 
   </Wrapper>
